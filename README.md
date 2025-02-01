@@ -48,7 +48,9 @@
 
 Для смены конфига напишите следующую команду
 
-```$HOME/zapret-configs/install.sh```
+```bash
+$HOME/zapret-configs/install.sh
+```
 
 3. Завершение установки:
 
