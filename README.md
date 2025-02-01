@@ -21,7 +21,8 @@
 1. **Скачайте и запустите скрипт установки:**
 
    ```bash
-   bash <(curl -s https://raw.githubusercontent.com/kartavkun/zapret-discord-youtube/main/setup.sh)```
+   bash <(curl -s https://raw.githubusercontent.com/kartavkun/zapret-discord-youtube/main/setup.sh)
+   ```
 
 Этот скрипт:
 
