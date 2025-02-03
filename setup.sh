@@ -3,27 +3,27 @@
 # Функция для установки wget с использованием apt (Debian/Ubuntu)
 install_with_apt() {
     sudo apt update
-    sudo apt install -y wget
+    sudo apt install -y wget git
 }
 
 # Функция для установки wget с использованием yum (CentOS/Fedora)
 install_with_yum() {
-    sudo yum install -y wget
+    sudo yum install -y wget git
 }
 
 # Функция для установки wget с использованием dnf (Fedora)
 install_with_dnf() {
-    sudo dnf install -y wget
+    sudo dnf install -y wget git
 }
 
 # Функция для установки wget с использованием pacman (Arch Linux)
 install_with_pacman() {
-    sudo pacman -Sy --noconfirm wget
+    sudo pacman -Sy --noconfirm wget git
 }
 
 # Функция для установки wget с использованием zypper (openSUSE)
 install_with_zypper() {
-    sudo zypper install -y wget
+    sudo zypper install -y wget git
 }
 
 # Определяем пакетный менеджер
