@@ -58,23 +58,26 @@ echo "wget успешно установлен!"
 # Создаем временную директорию, если она не существует
 mkdir -p "$HOME/tmp"
 
+# Переменная для хранения версии zapret
+ZAPRET_VERSION="v70.1"
+
 # Закачка последнего релиза bol-van/zapret
 echo "Скачивание последнего релиза zapret..."
-if ! wget -O "$HOME/tmp/zapret-v70.1.tar.gz" "https://github.com/bol-van/zapret/releases/download/v70.1/zapret-v70.tar.gz"; then
+if ! wget -O "$HOME/tmp/zapret-$ZAPRET_VERSION.tar.gz" "https://github.com/bol-van/zapret/releases/download/$ZAPRET_VERSION/zapret-$ZAPRET_VERSION.tar.gz"; then
   echo "Ошибка: не удалось скачать zapret."
   exit 1
 fi
 
 # Распаковка архива
 echo "Распаковка zapret..."
-if ! tar -xvf "$HOME/tmp/zapret-v70.tar.gz" -C "$HOME/tmp"; then
+if ! tar -xvf "$HOME/tmp/zapret-$ZAPRET_VERSION.tar.gz" -C "$HOME/tmp"; then
   echo "Ошибка: не удалось распаковать zapret."
   exit 1
 fi
 
 # Перемещение zapret в /opt/zapret
 echo "Перемещение zapret в /opt/zapret..."
-if ! sudo mv "$HOME/tmp/zapret-v70" /opt/zapret; then
+if ! sudo mv "$HOME/tmp/zapret-$ZAPRET_VERSION" /opt/zapret; then
   echo "Ошибка: не удалось переместить zapret в /opt/zapret."
   exit 1
 fi
