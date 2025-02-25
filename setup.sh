@@ -59,7 +59,7 @@ echo "wget успешно установлен!"
 mkdir -p "$HOME/tmp"
 
 # Переменная для хранения версии zapret
-ZAPRET_VERSION="v70.1"
+ZAPRET_VERSION="v70"
 
 # Закачка последнего релиза bol-van/zapret
 echo "Скачивание последнего релиза zapret..."
