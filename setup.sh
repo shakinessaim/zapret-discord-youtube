@@ -57,6 +57,12 @@ echo "wget успешно установлен!"
 
 # Создаем временную директорию, если она не существует
 mkdir -p "$HOME/tmp"
+# Удаление архива с запретом на всякий
+rm -rf "$HOME/tmp/*"
+
+# Бэкап запрета если есть
+sudo cp "/opt/zapret" "/opt/zapret.bak"
+sudo rm -rf "/opt/zapret"
 
 # Переменная для хранения версии zapret
 ZAPRET_VERSION="v70.3"
@@ -85,8 +91,11 @@ fi
 # Клонирование репозитория с конфигами
 echo "Клонирование репозитория с конфигами..."
 if ! git clone https://github.com/kartavkun/zapret-discord-youtube.git "$HOME/zapret-configs"; then
-  echo "Ошибка: не удалось клонировать репозиторий с конфигами."
+  rm -rf $HOME/zapret-configs
+  if ! git clone https://github.com/kartavkun/zapret-discord-youtube.git "$HOME/zapret-configs"; then
+    echo "Ошибка: не удалось клонировать репозиторий с конфигами."
   exit 1
+  fi
 fi
 
 # Копирование hostlists
