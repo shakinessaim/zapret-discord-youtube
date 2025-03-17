@@ -35,3 +35,5 @@ discord-attachments-uploads-prd.storage.googleapis.com
 10tv.app
 cloudflare-ech.com
 frankerfacez.com
+betterttv.net
+cdn.betterttv.net
