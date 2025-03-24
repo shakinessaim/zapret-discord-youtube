@@ -65,7 +65,7 @@ sudo cp "/opt/zapret" "/opt/zapret.bak"
 sudo rm -rf "/opt/zapret"
 
 # Переменная для хранения версии zapret
-ZAPRET_VERSION="v70.3"
+ZAPRET_VERSION="v70.5"
 
 # Закачка последнего релиза bol-van/zapret
 echo "Скачивание последнего релиза zapret..."
