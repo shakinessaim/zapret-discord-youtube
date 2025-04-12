@@ -13,8 +13,13 @@ default_install() {
   echo "Запуск install_easy.sh..."
   if ! /opt/zapret/install_easy.sh; then
     echo "Ошибка: не удалось запустить install_easy.sh."
-    exit 1
   fi
+
+  if [ -f "/sys/fs/selinux/enforce" ]; then 
+	echo "Обнаружены следы selinux. Применяем правила."
+	./module/fixfilecontext.sh
+  fi
+
 }
 
 # Функции для установки различных конфигов
