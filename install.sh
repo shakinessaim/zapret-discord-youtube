@@ -4,12 +4,6 @@ clear
 
 # Функция для установки конфига по умолчанию
 default_install() {
-  echo "Копирование конфига 50-discord..."
-  if ! cp /opt/zapret/init.d/custom.d.examples.linux/50-discord /opt/zapret/init.d/sysv/custom.d/; then
-    echo "Ошибка: не удалось скопировать 50-discord."
-    exit 1
-  fi
-
   if [ -f "/sys/fs/selinux/enforce" ]; then 
 	echo "Обнаружены следы selinux. Применяем правила."
 	./module/fixfilecontext.sh

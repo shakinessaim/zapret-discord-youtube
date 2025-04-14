@@ -1,49 +1,55 @@
 #!/bin/bash
 
-# Функция для установки wget с использованием apt (Debian/Ubuntu)
+# Функция для установки wget/curl с использованием nala (Debian/Ubuntu)
+install_with_nala() {
+  sudo nala update
+  sudo nala install -y wget curl git
+}
+
+# Функция для установки wget/curl с использованием apt (Debian/Ubuntu)
 install_with_apt() {
   sudo apt update
-  sudo apt install -y wget git
+  sudo apt install -y wget curl git
 }
 
-# Функция для установки wget с использованием yum (CentOS/Fedora)
+# Функция для установки wget/curl с использованием yum (CentOS/Fedora)
 install_with_yum() {
-  sudo yum install -y wget git
+  sudo yum install -y wget curl git
 }
 
-# Функция для установки wget с использованием dnf (Fedora)
+# Функция для установки wget/curl с использованием dnf (Fedora)
 install_with_dnf() {
-  sudo dnf install -y wget git
+  sudo dnf install -y wget curl git
 }
 
-# Функция для установки wget с использованием pacman (Arch Linux)
+# Функция для установки wget/curl с использованием pacman (Arch Linux)
 install_with_pacman() {
-  sudo pacman -Sy --noconfirm wget git
+  sudo pacman -Sy --noconfirm wget curl git
 }
 
-# Функция для установки wget с использованием zypper (openSUSE)
+# Функция для установки wget/curl с использованием zypper (openSUSE)
 install_with_zypper() {
-  sudo zypper install -y wget git
+  sudo zypper install -y wget curl git
 }
 
-# Определяем пакетный менеджер
+# Определяем пакетный менеджер для установки wget
 if command -v apt &>/dev/null; then
-  echo "Обнаружен apt, устанавливаем wget..."
+  echo "Обнаружен apt, устанавливаем wget и curl..."
   install_with_apt
 elif command -v yum &>/dev/null; then
-  echo "Обнаружен yum, устанавливаем wget..."
+  echo "Обнаружен yum, устанавливаем wget и curl..."
   install_with_yum
 elif command -v dnf &>/dev/null; then
-  echo "Обнаружен dnf, устанавливаем wget..."
+  echo "Обнаружен dnf, устанавливаем wget и curl..."
   install_with_dnf
 elif command -v pacman &>/dev/null; then
-  echo "Обнаружен pacman, устанавливаем wget..."
+  echo "Обнаружен pacman, устанавливаем wget и curl..."
   install_with_pacman
 elif command -v zypper &>/dev/null; then
-  echo "Обнаружен zypper, устанавливаем wget..."
+  echo "Обнаружен zypper, устанавливаем wget и curl..."
   install_with_zypper
 else
-  echo "Не удалось определить пакетный менеджер. Установите wget вручную."
+  echo "Не удалось определить пакетный менеджер. Установите wget и curl вручную."
   exit 1
 fi
 
@@ -55,6 +61,14 @@ fi
 
 echo "wget успешно установлен!"
 
+# Проверка успешной установки curl
+if ! command -v curl &>/dev/null; then
+  echo "Ошибка: curl не установлен. Установите его вручную."
+  exit 1
+fi
+
+echo "curl успешно установлен!"
+
 # Создаем временную директорию, если она не существует
 mkdir -p "$HOME/tmp"
 # Удаление архива с запретом на всякий
@@ -64,8 +78,15 @@ rm -rf "$HOME/tmp/*"
 sudo cp "/opt/zapret" "/opt/zapret.bak"
 sudo rm -rf "/opt/zapret"
 
-# Переменная для хранения версии zapret
-ZAPRET_VERSION="v70.5"
+# Получение последней версии zapret с GitHub API
+ZAPRET_VERSION=$(curl -s "https://api.github.com/repos/bol-van/zapret/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+
+if [ -z "$ZAPRET_VERSION" ]; then
+  echo "Ошибка: не удалось определить последнюю версию zapret."
+  exit 1
+fi
+
+echo "Последняя версия zapret: $ZAPRET_VERSION"
 
 # Закачка последнего релиза bol-van/zapret
 echo "Скачивание последнего релиза zapret..."
@@ -81,9 +102,31 @@ if ! tar -xvf "$HOME/tmp/zapret-$ZAPRET_VERSION.tar.gz" -C "$HOME/tmp"; then
   exit 1
 fi
 
+# Версия без 'v' в начале для работы с директорией
+ZAPRET_DIR_VERSION=$(echo $ZAPRET_VERSION | sed 's/^v//')
+echo "Определение пути распакованного архива..."
+
+# Проверяем наличие директорий с разными вариантами именования
+if [ -d "$HOME/tmp/zapret-$ZAPRET_DIR_VERSION" ]; then
+  ZAPRET_EXTRACT_DIR="$HOME/tmp/zapret-$ZAPRET_DIR_VERSION"
+elif [ -d "$HOME/tmp/zapret-$ZAPRET_VERSION" ]; then
+  ZAPRET_EXTRACT_DIR="$HOME/tmp/zapret-$ZAPRET_VERSION"
+else
+  # Если не нашли конкретные варианты, ищем любую папку zapret-*
+  ZAPRET_EXTRACT_DIR=$(find "$HOME/tmp" -type d -name "zapret-*" | head -n 1)
+  if [ -z "$ZAPRET_EXTRACT_DIR" ]; then
+    echo "Ошибка: не удалось найти распакованную директорию zapret."
+    echo "Содержимое $HOME/tmp:"
+    ls -la "$HOME/tmp"
+    exit 1
+  fi
+fi
+
+echo "Найден распакованный каталог: $ZAPRET_EXTRACT_DIR"
+
 # Перемещение zapret в /opt/zapret
 echo "Перемещение zapret в /opt/zapret..."
-if ! sudo mv "$HOME/tmp/zapret-$ZAPRET_VERSION" /opt/zapret; then
+if ! sudo mv "$ZAPRET_EXTRACT_DIR" /opt/zapret; then
   echo "Ошибка: не удалось переместить zapret в /opt/zapret."
   exit 1
 fi
