@@ -75,10 +75,14 @@ mkdir -p "$HOME/tmp"
 rm -rf "$HOME/tmp/*"
 
 # Бэкап запрета если есть
-sudo cp "/opt/zapret" "/opt/zapret.bak"
+if [ -d "/opt/zapret" ]; then
+  echo "Создание резервной копии существующего zapret..."
+  sudo cp -r "/opt/zapret" "/opt/zapret.bak"
+fi
 sudo rm -rf "/opt/zapret"
 
 # Получение последней версии zapret с GitHub API
+echo "Определение последней версии zapret..."
 ZAPRET_VERSION=$(curl -s "https://api.github.com/repos/bol-van/zapret/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
 if [ -z "$ZAPRET_VERSION" ]; then
