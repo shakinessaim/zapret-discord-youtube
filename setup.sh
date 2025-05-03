@@ -1,55 +1,63 @@
 #!/bin/bash
 
-# Функция для установки wget/curl с использованием nala (Debian/Ubuntu)
+# Функция для установки wget/git с использованием nala (Debian/Ubuntu)
 install_with_nala() {
   sudo nala update
-  sudo nala install -y wget curl git
+  sudo nala install -y wget git
 }
 
-# Функция для установки wget/curl с использованием apt (Debian/Ubuntu)
+# Функция для установки wget/git с использованием apt (Debian/Ubuntu)
 install_with_apt() {
   sudo apt update
-  sudo apt install -y wget curl git
+  sudo apt install -y wget git
 }
 
-# Функция для установки wget/curl с использованием yum (CentOS/Fedora)
+# Функция для установки wget/git с использованием yum (CentOS/Fedora)
 install_with_yum() {
-  sudo yum install -y wget curl git
+  sudo yum install -y wget git
 }
 
-# Функция для установки wget/curl с использованием dnf (Fedora)
+# Функция для установки wget/git с использованием dnf (Fedora)
 install_with_dnf() {
-  sudo dnf install -y wget curl git
+  sudo dnf install -y wget  git
 }
 
-# Функция для установки wget/curl с использованием pacman (Arch Linux)
+# Функция для установки wget/git с использованием pacman (Arch Linux)
 install_with_pacman() {
-  sudo pacman -Sy --noconfirm wget curl git
+  sudo pacman -Sy --noconfirm wget git 
 }
 
-# Функция для установки wget/curl с использованием zypper (openSUSE)
+# Функция для установки wget/git с использованием zypper (openSUSE)
 install_with_zypper() {
-  sudo zypper install -y wget curl git
+  sudo zypper install -y wget git
+}
+
+# Функция для установки wget/git с использованием xbps (Void Linux)
+install_with_xbps() {
+  sudo xbps-install -A wget git
 }
 
 # Определяем пакетный менеджер для установки wget
 if command -v apt &>/dev/null; then
-  echo "Обнаружен apt, устанавливаем wget и curl..."
+  echo "Обнаружен apt, устанавливаем wget и git..."
   install_with_apt
 elif command -v yum &>/dev/null; then
-  echo "Обнаружен yum, устанавливаем wget и curl..."
+  echo "Обнаружен yum, устанавливаем wget и git..."
   install_with_yum
 elif command -v dnf &>/dev/null; then
-  echo "Обнаружен dnf, устанавливаем wget и curl..."
+  echo "Обнаружен dnf, устанавливаем wget и git..."
   install_with_dnf
 elif command -v pacman &>/dev/null; then
-  echo "Обнаружен pacman, устанавливаем wget и curl..."
+  echo "Обнаружен pacman, устанавливаем wget и git..."
   install_with_pacman
 elif command -v zypper &>/dev/null; then
-  echo "Обнаружен zypper, устанавливаем wget и curl..."
+  echo "Обнаружен zypper, устанавливаем wget и git..."
   install_with_zypper
+elif command -v xbps-install &>/dev/null; then
+  echo "Обнаружен xbps, устанавливаем wget и git..."
+  install_with_xbps
 else
-  echo "Не удалось определить пакетный менеджер. Установите wget и curl вручную."
+  echo "Не удалось определить пакетный менеджер. Установите wget и git вручную."
   exit 1
 fi
 
@@ -151,6 +159,25 @@ if ! cp -r "$HOME/zapret-configs/hostlists" /opt/zapret/hostlists; then
   echo "Ошибка: не удалось скопировать hostlists."
   exit 1
 fi
+
+# Настройка IP forwarding для WireGuard
+echo "Проверка и настройка IP forwarding для WireGuard..."
+if [ ! -f "/etc/sysctl.d/99-sysctl.conf" ]; then
+  echo "Создание конфигурационного файла /etc/sysctl.d/99-sysctl.conf..."
+  echo "# Конфигурация для zapret" | sudo tee /etc/sysctl.d/99-sysctl.conf > /dev/null
+  echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf > /dev/null
+else
+  # Проверяем, содержит ли файл уже параметр ip_forward
+  if ! grep -q "net.ipv4.ip_forward=1" /etc/sysctl.d/99-sysctl.conf; then
+    echo "Добавление параметра net.ipv4.ip_forward=1 в /etc/sysctl.d/99-sysctl.conf..."
+    echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf > /dev/null
+  else
+    echo "Параметр net.ipv4.ip_forward=1 уже установлен"
+  fi
+fi
+
+# Применяем настройки без перезагрузки
+sudo sysctl -p /etc/sysctl.d/99-sysctl.conf
 
 # Запуск второго скрипта
 echo "Запуск install.sh..."
