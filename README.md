@@ -22,8 +22,6 @@
 > Установите **curl** для скачивания и запуска скрипта
 
 1. **Скачайте и запустите скрипт установки:**
-   > [!NOTE]  
-   > Установите **curl** для скачивания и запуска скрипта
 
    ```bash
    bash <(curl -s https://raw.githubusercontent.com/kartavkun/zapret-discord-youtube/main/setup.sh)
