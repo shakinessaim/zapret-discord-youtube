@@ -13,6 +13,15 @@ default_install() {
   if ! /opt/zapret/install_easy.sh; then
     echo "Ошибка: не удалось запустить install_easy.sh."
   fi
+
+  # Проверка на Void Linux и настройка службы через runit
+  if [ -f "/etc/os-release" ] && grep -q "PRETTY_NAME=\"Void Linux\"" /etc/os-release; then
+    echo "Настройка службы zapret для Void Linux через runit..."
+    sudo cp -r /opt/zapret/init.d/runit/zapret/ /etc/sv/
+    sudo ln -s /etc/sv/zapret /var/service
+    sudo sv up zapret 
+    echo "Служба zapret настроена и запущена для Void Linux."
+  fi
 }
 
 # Функции для установки различных конфигов

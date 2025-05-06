@@ -32,9 +32,9 @@ install_with_zypper() {
   sudo zypper install -y wget git
 }
 
-# Функция для установки wget/git с использованием xbps (Void Linux)
+# Функция для установки wget/git и других пакетов с использованием xbps (Void Linux)
 install_with_xbps() {
-  sudo xbps-install -A wget git
+  sudo xbps-install -A wget git ipset iptables nftables cronie
 }
 
 # Определяем пакетный менеджер для установки wget
