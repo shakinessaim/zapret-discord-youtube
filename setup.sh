@@ -94,8 +94,19 @@ echo "Определение последней версии zapret..."
 ZAPRET_VERSION=$(curl -s "https://api.github.com/repos/bol-van/zapret/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
 if [ -z "$ZAPRET_VERSION" ]; then
-  echo "Ошибка: не удалось определить последнюю версию zapret."
-  exit 1
+  echo "Не удалось получить версию через GitHub API. Используем git ls-remote..."
+  
+  # Получить все теги, отсортировать их по версии и выбрать последний
+  ZAPRET_VERSION=$(git ls-remote --tags https://github.com/bol-van/zapret.git | 
+                  grep -v '\^{}' | # Исключаем аннотированные теги
+                  awk -F/ '{print $NF}' | # Извлекаем только имя тега
+                  sort -V | # Сортируем по версии
+                  tail -n 1) # Берем последний тег
+  
+  if [ -z "$ZAPRET_VERSION" ]; then
+    echo "Ошибка: не удалось определить последнюю версию zapret через git ls-remote."
+    exit 1
+  fi
 fi
 
 echo "Последняя версия zapret: $ZAPRET_VERSION"
