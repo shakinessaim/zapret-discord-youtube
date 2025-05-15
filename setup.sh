@@ -57,25 +57,16 @@ elif command -v xbps-install &>/dev/null; then
   echo "Обнаружен xbps, устанавливаем wget и git..."
   install_with_xbps
 else
-  echo "Не удалось определить пакетный менеджер. Установите wget и git вручную."
-  exit 1
+  echo "Не удалось определить пакетный менеджер."
+  
+  # Проверяем, установлены ли wget и git уже
+  if command -v wget &>/dev/null && command -v git &>/dev/null; then
+    echo "wget и git уже установлены, продолжаем..."
+  else
+    echo "Необходимо установить wget и git вручную."
+    exit 1
+  fi
 fi
-
-# Проверка успешной установки wget
-if ! command -v wget &>/dev/null; then
-  echo "Ошибка: wget не установлен. Установите его вручную."
-  exit 1
-fi
-
-echo "wget успешно установлен!"
-
-# Проверка успешной установки curl
-if ! command -v curl &>/dev/null; then
-  echo "Ошибка: curl не установлен. Установите его вручную."
-  exit 1
-fi
-
-echo "curl успешно установлен!"
 
 # Создаем временную директорию, если она не существует
 mkdir -p "$HOME/tmp"
