@@ -39,7 +39,7 @@ install_with_xbps() {
 
 # Функция для установки wget/git с использованием slapt-get (Slackware)
 install_with_slapt-get() {
-  sudo slapt-get -i -y wget git
+  sudo slapt-get -i --no-prompt wget git
 }
 
 # Определяем пакетный менеджер для установки wget
