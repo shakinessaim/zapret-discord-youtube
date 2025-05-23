@@ -37,6 +37,11 @@ install_with_xbps() {
   sudo xbps-install -A wget git ipset iptables nftables cronie
 }
 
+# Функция для установки wget/git с использованием slapt-get (Slackware)
+install_with_slapt-get() {
+  sudo slapt-get -i -y wget git
+}
+
 # Определяем пакетный менеджер для установки wget
 if command -v apt &>/dev/null; then
   echo "Обнаружен apt, устанавливаем wget и git..."
@@ -56,6 +61,9 @@ elif command -v zypper &>/dev/null; then
 elif command -v xbps-install &>/dev/null; then
   echo "Обнаружен xbps, устанавливаем wget и git..."
   install_with_xbps
+elif command -v slapt-get &>/dev/null; then
+  echo "Обнаружен slapt-get, устанавливаем wget и git..."
+  install_with_slapt-get
 else
   echo "Не удалось определить пакетный менеджер."
   

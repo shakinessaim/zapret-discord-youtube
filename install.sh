@@ -22,6 +22,16 @@ default_install() {
     sudo sv up zapret 
     echo "Служба zapret настроена и запущена для Void Linux."
   fi
+
+  # Проверка на Slackware и настройка службы через sysv
+  if [ -f "/etc/os-release" ] && grep -q "^NAME=Slackware$" /etc/os-release; then
+    echo "Настройка службы zapret для Slackware..."
+    sudo ln -s /opt/zapret/init.d/sysv/zapret /etc/rc.d/rc.zapret
+    sudo chmod +x /etc/rc.d/rc.zapret
+    sudo /etc/rc.d/rc.zapret start
+    echo -e "\n# Запуск службы zapret\nif [ -x /etc/rc.d/rc.zapret ]; then\n  /etc/rc.d/rc.zapret start\nfi" | sudo tee -a /etc/rc.d/rc.local
+    echo "Служба zapret настроена и запущена для Slackware."
+  fi
 }
 
 # Функции для установки различных конфигов

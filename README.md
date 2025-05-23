@@ -78,7 +78,9 @@ sudo /opt/zapret/uninstall_easy.sh
 Если хотите обойти другие сайты, то я написал [гайд от себя](https://github.com/kartavkun/zapret-discord-youtube/discussions/2#discussion-7902158). Если есть люди более знающие, то я приму конструктивную критику :D
 
 ## Проверено на:
-- Arch Linux (i use Arch btw)
+- [Arch Linux](https://archlinux.org/) (i use Arch btw)
+- [Void Linux](https://voidlinux.org/)
+- [Slackware Linux](http://www.slackware.com/)
 
 ## Поддержка
 
