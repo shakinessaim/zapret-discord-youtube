@@ -42,6 +42,11 @@ install_with_slapt-get() {
   sudo slapt-get -i --no-prompt wget git
 }
 
+# Функция для установки wget/git с использованием apk (alpine linux)
+install_with_apk() {
+  sudo apk add wget git
+}
+
 # Определяем пакетный менеджер для установки wget
 if command -v apt &>/dev/null; then
   echo "Обнаружен apt, устанавливаем wget и git..."
@@ -64,6 +69,9 @@ elif command -v xbps-install &>/dev/null; then
 elif command -v slapt-get &>/dev/null; then
   echo "Обнаружен slapt-get, устанавливаем wget и git..."
   install_with_slapt-get
+elif command -v apk &>/dev/null; then
+  echo "Обнаружен apk, устанавливаем wget и git..."
+  install_with_apk
 else
   echo "Не удалось определить пакетный менеджер."
   

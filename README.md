@@ -81,6 +81,7 @@ sudo /opt/zapret/uninstall_easy.sh
 - [Arch Linux](https://archlinux.org/) (i use Arch btw)
 - [Void Linux](https://voidlinux.org/)
 - [Slackware Linux](http://www.slackware.com/)
+- [Alpine linux](https://www.alpinelinux.org/)
 
 ## Поддержка
 
