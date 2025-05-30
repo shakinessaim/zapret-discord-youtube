@@ -47,6 +47,12 @@ install_with_apk() {
   sudo apk add wget git
 }
 
+# Функция для установки wget/git с использованием eopkg (Solus)
+install_with_eopkg() {
+  sudo eopkg update-repo
+  sudo eopkg install wget git
+}
+
 # Определяем пакетный менеджер для установки wget
 if command -v apt &>/dev/null; then
   echo "Обнаружен apt, устанавливаем wget и git..."
@@ -72,6 +78,9 @@ elif command -v slapt-get &>/dev/null; then
 elif command -v apk &>/dev/null; then
   echo "Обнаружен apk, устанавливаем wget и git..."
   install_with_apk
+elif command -v eopkg &>/dev/null; then
+  echo "Обнаружен eopkg, устанавливаем wget и git..."
+  install_with_eopkg
 else
   echo "Не удалось определить пакетный менеджер."
   
@@ -153,6 +162,12 @@ else
 fi
 
 echo "Найден распакованный каталог: $ZAPRET_EXTRACT_DIR"
+
+# Проверяем, является ли система Solus, если да, то создаём /opt/
+if [ -f "/etc/os-release" ] && grep -q "^ID=solus" /etc/os-release; then
+    echo "Директория /opt/ не существует, создаём..."
+    sudo mkdir -p /opt/
+fi
 
 # Перемещение zapret в /opt/zapret
 echo "Перемещение zapret в /opt/zapret..."

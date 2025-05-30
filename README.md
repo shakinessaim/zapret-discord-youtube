@@ -82,6 +82,7 @@ sudo /opt/zapret/uninstall_easy.sh
 - [Void Linux](https://voidlinux.org/)
 - [Slackware Linux](http://www.slackware.com/)
 - [Alpine linux](https://www.alpinelinux.org/)
+- [Solus](https://getsol.us/)
 
 ## Поддержка
 
