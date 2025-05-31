@@ -83,6 +83,7 @@ sudo /opt/zapret/uninstall_easy.sh
 - [Slackware Linux](http://www.slackware.com/)
 - [Alpine linux](https://www.alpinelinux.org/)
 - [Solus](https://getsol.us/)
+- [AntiX Linux](https://antixlinux.com/)
 
 ## Поддержка
 
