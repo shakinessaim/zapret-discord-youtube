@@ -23,6 +23,24 @@ default_install() {
     echo "Служба zapret настроена и запущена для Void Linux."
   fi
 
+  # Проверка на AntiX Linux и настройка службы через runit или sysVinit
+  if [ -f "/usr/local/bin/antix" ]; then
+    if ! command -v sv >/dev/null 2>&1; then
+        echo "Настройка службы zapret для AntiX Linux..."
+        sudo ln -s /opt/zapret/init.d/zapret /etc/init.d/
+        sudo service zapret start
+        sudo update-rd.d zapret defaults
+        echo "Служба zapret настроена и запущена для AntiX Linux."
+    else
+        echo "Настройка службы zapret для AntiX Linux..."
+        sudo cp -r /opt/zapret/init.d/runit/zapret/ /etc/sv/
+        sudo ln -s /etc/sv/zapret/ /etc/service/
+        sudo sv up zapret 
+        echo "Служба zapret настроена и запущена для AntiX Linux."
+    fi
+
+  fi
+
   # Проверка на Slackware и настройка службы через sysv
   if [ -f "/etc/os-release" ] && grep -q "^NAME=Slackware$" /etc/os-release; then
     echo "Настройка службы zapret для Slackware..."
