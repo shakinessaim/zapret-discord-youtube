@@ -10,7 +10,7 @@ default_install() {
   fi
 
   echo "Запуск install_easy.sh..."
-  if ! /opt/zapret/install_easy.sh; then
+  if ! sudo /opt/zapret/install_easy.sh; then
     echo "Ошибка: не удалось запустить install_easy.sh."
   fi
 
