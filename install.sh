@@ -125,28 +125,38 @@ general_MGTS2() {
   default_install
 }
 
-general_FAKE_TLS_MOD() {
-  echo "Установка конфига general(FAKE TLS MOD)..."
-  if ! cp "$HOME/zapret-configs/configs/general_(FAKE_TLS_MOD)" /opt/zapret/config; then
-    echo "Ошибка: не удалось скопировать конфиг general(FAKE TLS MOD)."
+general_FAKE_TLS() {
+  echo "Установка конфига general(FAKE TLS)..."
+  if ! cp "$HOME/zapret-configs/configs/general_(FAKE_TLS)" /opt/zapret/config; then
+    echo "Ошибка: не удалось скопировать конфиг general(FAKE TLS)."
     exit 1
   fi
   default_install
 }
 
-general_FAKE_TLS_MOD_ALT() {
-  echo "Установка конфига general(FAKE TLS MOD ALT)..."
-  if ! cp "$HOME/zapret-configs/configs/general_(FAKE_TLS_MOD_ALT)" /opt/zapret/config; then
-    echo "Ошибка: не удалось скопировать конфиг general(FAKE TLS MOD ALT)."
+general_FAKE_TLS_ALT() {
+  echo "Установка конфига general(FAKE TLS ALT)..."
+  if ! cp "$HOME/zapret-configs/configs/general_(FAKE_TLS_ALT)" /opt/zapret/config; then
+    echo "Ошибка: не удалось скопировать конфиг general(FAKE TLS ALT)."
     exit 1
   fi
   default_install
 }
 
-general_FAKE_TLS_MOD_AUTO() {
-  echo "Установка конфига general(FAKE TLS MOD AUTO)..."
-  if ! cp "$HOME/zapret-configs/configs/general_(FAKE_TLS_MOD_AUTO)" /opt/zapret/config; then
-    echo "Ошибка: не удалось скопировать конфиг general(FAKE TLS MOD AUTO)."
+general_FAKE_TLS_AUTO_ALT() {
+  echo "Установка конфига general(FAKE TLS AUTO ALT)..."
+  if ! cp "$HOME/zapret-configs/configs/general_(FAKE_TLS_AUTO_ALT)" /opt/zapret/config; then
+    echo "Ошибка: не удалось скопировать конфиг general(FAKE TLS AUTO ALT)."
+    exit 1
+  fi
+  default_install
+}
+
+
+general_FAKE_TLS_AUTO() {
+  echo "Установка конфига general(FAKE TLS AUTO)..."
+  if ! cp "$HOME/zapret-configs/configs/general_(FAKE_TLS_AUTO)" /opt/zapret/config; then
+    echo "Ошибка: не удалось скопировать конфиг general(FAKE TLS AUTO)."
     exit 1
   fi
   default_install
@@ -154,7 +164,7 @@ general_FAKE_TLS_MOD_AUTO() {
 
 # Меню для выбора конфига
 echo "Выберите конфиг для установки:"
-select config in "general" "general_ALT" "general_ALT2" "general_ALT3" "general_ALT4" "general_ALT5" "general_MGTS" "general_MGTS2" "general_FAKE_TLS_MOD" "general_FAKE_TLS_MOD_AUTO" "general_FAKE_TLS_MOD_ALT"; do
+select config in "general" "general_ALT" "general_ALT2" "general_ALT3" "general_ALT4" "general_ALT5" "general_MGTS" "general_MGTS2" "general_FAKE_TLS" "general_FAKE_TLS_AUTO" "general_FAKE_TLS_AUTO_ALT" "general_FAKE_TLS_ALT"; do
   case $config in
   "general")
     general
@@ -188,16 +198,20 @@ select config in "general" "general_ALT" "general_ALT2" "general_ALT3" "general_
     general_MGTS2
     break
     ;;
-  "general_FAKE_TLS_MOD")
-    general_FAKE_TLS_MOD
+  "general_FAKE_TLS")
+    general_FAKE_TLS
     break
     ;;
-  "general_FAKE_TLS_MOD_AUTO")
-    general_FAKE_TLS_MOD_AUTO
+  "general_FAKE_TLS_AUTO")
+    general_FAKE_TLS_AUTO
     break
     ;;
-  "general_FAKE_TLS_MOD_ALT")
-    general_FAKE_TLS_MOD_ALT
+  "general_(FAKE_TLS_AUTO_ALT)")
+    general_FAKE_TLS_AUTO_ALT
+    break
+    ;;
+  "general_FAKE_TLS_ALT")
+    general_FAKE_TLS_ALT
     break
     ;;
   *)
