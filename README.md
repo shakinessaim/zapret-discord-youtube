@@ -84,6 +84,9 @@ sudo /opt/zapret/uninstall_easy.sh
 - [Alpine linux](https://www.alpinelinux.org/)
 - [Solus](https://getsol.us/)
 - [AntiX Linux](https://antixlinux.com/)
+- [Pop!_OS](https://system76.com/pop/)
+- [Ubuntu 18.04+](https://ubuntu.com/)
+- [Kubuntu](https://kubuntu.org/)
 
 ## Поддержка
 

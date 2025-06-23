@@ -107,6 +107,15 @@ general_ALT5() {
   default_install
 }
 
+general_ALT6() {
+  echo "Установка конфига general(ALT6)..."
+  if ! cp "$HOME/zapret-configs/configs/general(ALT6)" /opt/zapret/config; then
+    echo "Ошибка: не удалось скопировать конфиг general(ALT6)."
+    exit 1
+  fi
+  default_install
+}
+
 general_MGTS() {
   echo "Установка конфига general(МГТС)..."
   if ! cp "$HOME/zapret-configs/configs/general(МГТС)" /opt/zapret/config; then
@@ -152,6 +161,14 @@ general_FAKE_TLS_AUTO_ALT() {
   default_install
 }
 
+general_FAKE_TLS_AUTO_ALT2() {
+  echo "Установка конфига general(FAKE TLS AUTO ALT2)..."
+  if ! cp "$HOME/zapret-configs/configs/general_(FAKE_TLS_AUTO_ALT2)" /opt/zapret/config; then
+    echo "Ошибка: не удалось скопировать конфиг general(FAKE TLS AUTO ALT2)."
+    exit 1
+  fi
+  default_install
+}
 
 general_FAKE_TLS_AUTO() {
   echo "Установка конфига general(FAKE TLS AUTO)..."
@@ -164,7 +181,7 @@ general_FAKE_TLS_AUTO() {
 
 # Меню для выбора конфига
 echo "Выберите конфиг для установки:"
-select config in "general" "general_ALT" "general_ALT2" "general_ALT3" "general_ALT4" "general_ALT5" "general_MGTS" "general_MGTS2" "general_FAKE_TLS" "general_FAKE_TLS_AUTO" "general_FAKE_TLS_AUTO_ALT" "general_FAKE_TLS_ALT"; do
+select config in "general" "general_ALT" "general_ALT2" "general_ALT3" "general_ALT4" "general_ALT5" "general_ALT6" "general_MGTS" "general_MGTS2" "general_FAKE_TLS" "general_FAKE_TLS_AUTO" "general_FAKE_TLS_AUTO_ALT" "general_FAKE_TLS_AUTO_ALT2" "general_FAKE_TLS_ALT"; do
   case $config in
   "general")
     general
@@ -190,6 +207,10 @@ select config in "general" "general_ALT" "general_ALT2" "general_ALT3" "general_
     general_ALT5
     break
     ;;
+  "general_ALT6")
+    general_ALT6
+    break
+    ;;
   "general_MGTS")
     general_MGTS
     break
@@ -208,6 +229,10 @@ select config in "general" "general_ALT" "general_ALT2" "general_ALT3" "general_
     ;;
   "general_(FAKE_TLS_AUTO_ALT)")
     general_FAKE_TLS_AUTO_ALT
+    break
+    ;;
+  "general_FAKE_TLS_AUTO_ALT2")
+    general_FAKE_TLS_AUTO_ALT2
     break
     ;;
   "general_FAKE_TLS_ALT")
