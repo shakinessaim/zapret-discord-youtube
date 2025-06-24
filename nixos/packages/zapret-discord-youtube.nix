@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://github.com/bol-van/zapret/releases/download/v${version}/zapret-v${version}.tar.gz";
-    sha256 = "sha256-LeDotLFH8Rml4kiXebig1jGUROWDst18HU1bC8+4djU=";
+    hash = "sha256-LeDotLFH8Rml4kiXebig1jGUROWDst18HU1bC8+4djU=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
