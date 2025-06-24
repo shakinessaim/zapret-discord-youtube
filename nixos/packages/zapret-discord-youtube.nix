@@ -15,9 +15,8 @@ stdenv.mkDerivation rec {
   pname = "zapret";
   version = "71.1.1";
 
-  src = fetchurl {
+  src = builtins.fetchurl {
     url = "https://github.com/bol-van/zapret/releases/download/v${version}/zapret-v${version}.tar.gz";
-    sha256 = lib.fakeHash; # Nix автоматически вычислит hash при первой сборке
   };
 
   nativeBuildInputs = [ makeWrapper ];
