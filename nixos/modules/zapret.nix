@@ -83,13 +83,6 @@ in {
 
     # Включаем необходимые модули ядра
     boot.kernelModules = [ "xt_NFQUEUE" "xt_connbytes" "xt_mark" "xt_set" ];
-    
-    # Системные пакеты
-    environment.systemPackages = with pkgs; [
-      iptables
-      ipset
-      zapretPackage
-    ] ++ lib.optional (cfg.firewallType == "nftables") pkgs.nftables;
 
     # systemd service
     systemd.services.zapret = {
