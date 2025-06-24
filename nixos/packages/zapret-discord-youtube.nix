@@ -45,10 +45,10 @@ stdenv.mkDerivation rec {
     cp -r * $out/opt/zapret/
     
     # Создаем wrapper скрипты для бинарников (они уже готовые)
-    makeWrapper $out/opt/zapret/nfq/nfqws $out/bin/nfqws \
+    makeWrapper $out/opt/zapret/binaries/linux-x86_64/nfqws $out/bin/nfqws \
       --prefix PATH : ${lib.makeBinPath [ iptables ipset coreutils ]}
     
-    makeWrapper $out/opt/zapret/tpws/tpws $out/bin/tpws \
+    makeWrapper $out/opt/zapret/binaries/linux-x86_64/tpws $out/bin/tpws \
       --prefix PATH : ${lib.makeBinPath [ iptables ipset coreutils ]}
     
     # Делаем все скрипты исполняемыми
@@ -58,8 +58,12 @@ stdenv.mkDerivation rec {
     chmod +x $out/opt/zapret/init.d/sysv/zapret
     
     # Убеждаемся что бинарники исполняемые
-    chmod +x $out/opt/zapret/nfq/nfqws
-    chmod +x $out/opt/zapret/tpws/tpws
+    chmod +x $out/opt/zapret/binaries/linux-x86_64/nfqws
+    chmod +x $out/opt/zapret/binaries/linux-x86_64/tpws
+    
+    # Создаем симлинки в nfq/ и tpws/ папки как в оригинале
+    ln -sf $out/opt/zapret/binaries/linux-x86_64/nfqws $out/opt/zapret/nfq/nfqws
+    ln -sf $out/opt/zapret/binaries/linux-x86_64/tpws $out/opt/zapret/tpws/tpws
     
     runHook postInstall
   '';
