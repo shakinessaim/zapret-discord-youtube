@@ -17,7 +17,7 @@
       in
       {
         packages = {
-          zapret = pkgs.callPackage ./nixos/packages/zapret.nix { 
+          zapret = pkgs.callPackage ./nixos/packages/zapret-discord-youtube.nix { 
             src = zapret-src; 
           };
           default = self.packages.${system}.zapret;
@@ -25,8 +25,8 @@
       }
     ) // {
       nixosModules = {
-        zapret = import ./nixos/modules/zapret.nix;
-        default = self.nixosModules.zapret;
+        zapret-discord-youtube = import ./nixos/modules/zapret-discord-youtube.nix;
+        default = self.nixosModules.zapret-discord-youtube;
       };
     };
 } 

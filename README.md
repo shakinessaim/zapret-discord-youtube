@@ -33,10 +33,10 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    zapret.url = "github:kartavkun/zapret-discord-youtube";
+    zapret-discord-youtube.url = "github:kartavkun/zapret-discord-youtube";
   };
 
-  outputs = { self, nixpkgs, zapret }@inputs: {
+  outputs = { self, nixpkgs, zapret-discord-youtube }@inputs: {
     # ВАЖНО: nixosConfigurations должен быть в корне outputs
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -46,13 +46,13 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
         ./configuration.nix
         
         # Модуль zapret
-        zapret.nixosModules.default
+        zapret-discord-youtube.nixosModules.default
         
         # Или можно настроить zapret прямо здесь:
         {
-          services.zapret = {
+          services.zapret-discord-youtube = {
             enable = true;
-            config = "general"; # или любой другой
+            config = "general"; # или любой другой из configs/
             firewallType = "iptables";
             enableIPv6 = false;
           };
@@ -62,8 +62,6 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
   };
 } 
 ```
-
-Поддерживаются все конфигурации: `general`, `general_ALT*`, `general_MGTS*`, `general_FAKE_TLS*`.
 
 ### Установка на Linux
 

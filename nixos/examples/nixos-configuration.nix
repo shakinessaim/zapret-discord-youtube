@@ -1,44 +1,48 @@
-# Пример использования zapret flake в NixOS configuration
+# Пример конфигурации NixOS с кастомным модулем zapret
 { config, pkgs, inputs, ... }:
 
 {
   # Импортируем zapret модуль из flake
   imports = [
-    inputs.zapret.nixosModules.default
+    inputs.zapret-discord-youtube.nixosModules.default
   ];
 
-  # Настройка zapret
-  services.zapret = {
+  # Настройка zapret с выбором конфигурации
+  services.zapret-discord-youtube = {
     enable = true;
     
-    # Выбираем конфигурацию (по умолчанию "general")
-    config = "general"; # или любой из: general_ALT, general_ALT2, etc.
+    # Выбираем конфигурацию (любую из папки configs/)
+    config = "general"; # или "general(ALT)", "general(МГТС)", "general_(FAKE_TLS)", etc.
     
     # Тип фаерволла
     firewallType = "iptables"; # или "nftables"
     
-    # Включить IPv6 поддержку
+    # Включить IPv6 поддержку (по умолчанию отключено)
     enableIPv6 = false;
+    
+    # Путь к конфигурациям (по умолчанию ./configs)
+    # configPath = /path/to/custom/configs;
     
     # Дополнительные hostlists (опционально)
     customHostlists = [
-      # "/path/to/custom/hostlist.txt"
+      # /path/to/custom/hostlist.txt
     ];
   };
 
-  # Дополнительные настройки сети (если нужны)
-  networking = {
-    firewall = {
-      enable = true;
-      # Разрешить zapret управлять правилами
-      extraCommands = ''
-        # Zapret будет автоматически добавлять свои правила
-      '';
-    };
+  # Разрешаем IP форвардинг для работы zapret
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
   };
 
-  # Включаем необходимые службы
-  services.resolved.enable = true;
+  # Настройки сети (пример)
+  networking = {
+    hostName = "nixos-zapret";
+    firewall.enable = true; # zapret управляет своими правилами автоматически
+  };
+
+  # Остальные настройки системы...
+  system.stateVersion = "25.05";
 }
 
 # ===== ИСПОЛЬЗОВАНИЕ В flake.nix =====
