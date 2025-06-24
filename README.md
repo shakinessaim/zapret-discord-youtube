@@ -18,10 +18,10 @@
 
 Для пользователей NixOS доступен flake с декларативной настройкой:
 
-[!NOTE]
-
-для поддержки flake в nixos пропишите в файле `/etc/nixos/configuration.nix` (см. подробнее [Flakes](https://wiki.nixos.org/wiki/Flakes/ru))
-
+>[!NOTE]
+> 
+> для поддержки flake в nixos пропишите в файле `/etc/nixos/configuration.nix` (см. подробнее [Flakes](https://wiki.nixos.org/wiki/Flakes/ru))
+>
 ```nix
 nix.settings.experimental-features = [ "nix-command" "flakes" ];
 ```
