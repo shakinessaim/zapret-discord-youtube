@@ -85,12 +85,11 @@ in {
     boot.kernelModules = [ "xt_NFQUEUE" "xt_connbytes" "xt_mark" "xt_set" ];
     
     # Системные пакеты
-    environment.systemPackages = [
-      pkgs.iptables
-      pkgs.ipset
+    environment.systemPackages = with pkgs; [
+      iptables
+      ipset
       zapretPackage
-      (if cfg.firewallType == "nftables" then pkgs.nftables else pkgs.iptables)
-    ];
+    ] ++ lib.optional (cfg.firewallType == "nftables") pkgs.nftables;
 
     # systemd service
     systemd.services.zapret = {
