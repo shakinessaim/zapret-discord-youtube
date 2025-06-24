@@ -74,8 +74,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # Установка пакета
-    environment.systemPackages = [ zapretPackage ];
 
     # Создание директорий и файлов
     environment.etc = {
@@ -87,10 +85,11 @@ in {
     boot.kernelModules = [ "xt_NFQUEUE" "xt_connbytes" "xt_mark" "xt_set" ];
     
     # Системные пакеты
-    environment.systemPackages = with pkgs; [
-      iptables
-      ipset
-      (if cfg.firewallType == "nftables" then nftables else iptables)
+    environment.systemPackages = [
+      pkgs.iptables
+      pkgs.ipset
+      zapretPackage
+      (if cfg.firewallType == "nftables" then pkgs.nftables else pkgs.iptables)
     ];
 
     # systemd service

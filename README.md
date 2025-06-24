@@ -18,28 +18,49 @@
 
 Для пользователей NixOS доступен flake с декларативной настройкой:
 
+[!NOTE]
+
+для поддержки flake в nixos пропишите в файле `/etc/nixos/configuration.nix` (см. подробнее [Flakes](https://wiki.nixos.org/wiki/Flakes/ru))
+
+```nix
+nix.settings.experimental-features = [ "nix-command" "flakes" ];
+```
+
 ```nix
 # В вашем flake.nix
 {
+  description = "Zapret";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     zapret.url = "github:kartavkun/zapret-discord-youtube";
   };
 
-  outputs = { nixpkgs, zapret, ... }: {
-    nixosConfigurations.myhost = nixpkgs.lib.nixosSystem {
+  outputs = { self, nixpkgs, zapret }@inputs: {
+    # ВАЖНО: nixosConfigurations должен быть в корне outputs
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
       modules = [
+        # Твоя основная конфигурация
+        ./configuration.nix
+        
+        # Модуль zapret
         zapret.nixosModules.default
+        
+        # Или можно настроить zapret прямо здесь:
         {
           services.zapret = {
             enable = true;
-            config = "general"; # или любой другой конфиг
+            config = "general"; # или любой другой
+            firewallType = "iptables";
+            enableIPv6 = false;
           };
         }
       ];
     };
   };
-}
+} 
 ```
 
 Поддерживаются все конфигурации: `general`, `general_ALT*`, `general_MGTS*`, `general_FAKE_TLS*`.
