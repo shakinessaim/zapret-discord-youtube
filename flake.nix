@@ -4,22 +4,16 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    zapret-src = {
-      url = "github:bol-van/zapret";
-      flake = false; # Используем как обычный исходник
-    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, zapret-src }@inputs:
+  outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
       in
       {
         packages = {
-          zapret = pkgs.callPackage ./nixos/packages/zapret-discord-youtube.nix { 
-            src = zapret-src; 
-          };
+          zapret = pkgs.callPackage ./nixos/packages/zapret-discord-youtube.nix { };
           default = self.packages.${system}.zapret;
         };
       }

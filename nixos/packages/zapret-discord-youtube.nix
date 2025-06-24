@@ -1,6 +1,6 @@
 { lib
 , stdenv
-, src
+, fetchurl
 , makeWrapper
 , iptables
 , ipset
@@ -13,9 +13,12 @@
 
 stdenv.mkDerivation rec {
   pname = "zapret";
-  version = "latest";
+  version = "71.1.1";
 
-  inherit src; # Используем src из flake input
+  src = fetchurl {
+    url = "https://github.com/bol-van/zapret/releases/download/v${version}/zapret-v${version}.tar.gz";
+    sha256 = lib.fakeHash; # Nix автоматически вычислит hash при первой сборке
+  };
 
   nativeBuildInputs = [ makeWrapper ];
 
@@ -29,25 +32,34 @@ stdenv.mkDerivation rec {
     wget
   ];
 
+  # Не нужно собирать - бинарники уже готовые
+  dontBuild = true;
+
   installPhase = ''
     runHook preInstall
     
     mkdir -p $out/bin
-    mkdir -p $out/share/zapret
+    mkdir -p $out/opt/zapret
     
-    # Копируем все файлы zapret
-    cp -r * $out/share/zapret/
+    # Копируем все файлы zapret в /opt/zapret структуру
+    cp -r * $out/opt/zapret/
     
-    # Создаем wrapper скрипты
-    makeWrapper $out/share/zapret/nfqws/nfqws $out/bin/nfqws \
+    # Создаем wrapper скрипты для бинарников (они уже готовые)
+    makeWrapper $out/opt/zapret/nfq/nfqws $out/bin/nfqws \
       --prefix PATH : ${lib.makeBinPath [ iptables ipset coreutils ]}
     
-    makeWrapper $out/share/zapret/tpws/tpws $out/bin/tpws \
+    makeWrapper $out/opt/zapret/tpws/tpws $out/bin/tpws \
       --prefix PATH : ${lib.makeBinPath [ iptables ipset coreutils ]}
     
-    # Делаем скрипты исполняемыми
-    chmod +x $out/share/zapret/install_easy.sh
-    chmod +x $out/share/zapret/uninstall_easy.sh
+    # Делаем все скрипты исполняемыми
+    find $out/opt/zapret -name "*.sh" -exec chmod +x {} \;
+    chmod +x $out/opt/zapret/install_easy.sh
+    chmod +x $out/opt/zapret/uninstall_easy.sh
+    chmod +x $out/opt/zapret/init.d/sysv/zapret
+    
+    # Убеждаемся что бинарники исполняемые
+    chmod +x $out/opt/zapret/nfq/nfqws
+    chmod +x $out/opt/zapret/tpws/tpws
     
     runHook postInstall
   '';
