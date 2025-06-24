@@ -77,7 +77,7 @@ in {
     };
     
     configPath = mkOption {
-      type = types.path;
+      type = types.nullOr types.path;
       default = null;
       description = "Path to directory containing zapret configuration files. Must be set explicitly.";
       example = "/path/to/your/configs";
