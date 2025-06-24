@@ -14,6 +14,36 @@
 
 ## Установка и использование
 
+### Установка на NixOS
+
+Для пользователей NixOS доступен flake с декларативной настройкой:
+
+```nix
+# В вашем flake.nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    zapret.url = "github:kartavkun/zapret-discord-youtube";
+  };
+
+  outputs = { nixpkgs, zapret, ... }: {
+    nixosConfigurations.myhost = nixpkgs.lib.nixosSystem {
+      modules = [
+        zapret.nixosModules.default
+        {
+          services.zapret = {
+            enable = true;
+            config = "general"; # или любой другой конфиг
+          };
+        }
+      ];
+    };
+  };
+}
+```
+
+Поддерживаются все конфигурации: `general`, `general_ALT*`, `general_MGTS*`, `general_FAKE_TLS*`.
+
 ### Установка на Linux
 
 Для удобства установки и настройки zapret на Linux был создан автоматизированный скрипт. Следуйте инструкциям ниже:
@@ -87,6 +117,7 @@ sudo /opt/zapret/uninstall_easy.sh
 - [Pop!_OS](https://system76.com/pop/)
 - [Ubuntu 18.04+](https://ubuntu.com/)
 - [Kubuntu](https://kubuntu.org/)
+- [NixOS](https://nixos.org/) (через flake)
 
 ## Поддержка
 
