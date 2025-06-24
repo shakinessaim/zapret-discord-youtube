@@ -50,6 +50,16 @@ default_install() {
     echo -e "\n# Запуск службы zapret\nif [ -x /etc/rc.d/rc.zapret ]; then\n  /etc/rc.d/rc.zapret start\nfi" | sudo tee -a /etc/rc.d/rc.local
     echo "Служба zapret настроена и запущена для Slackware."
   fi
+
+  # Проверка наличие системы инициализации s6 и настройка службы через s6
+  if command -v s6-rc >/dev/null 2>&1; then
+    echo "Настройка службы zapret для s6..."
+    sudo cp -r /opt/zapret/init.d/s6/zapret/ /etc/s6/adminsv/
+    sudo touch /etc/s6/adminsv/default/contents.d/zapret
+    sudo s6-db-reload
+    sudo s6-rc -u change zapret
+    echo "Служба zapret настроена и запущена для s6."
+  fi
 }
 
 # Функции для установки различных конфигов
