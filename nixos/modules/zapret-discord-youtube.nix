@@ -8,6 +8,9 @@ let
   zapretPkg = pkgs.callPackage ../packages/zapret-discord-youtube.nix { };
   
   configFile = "${cfg.configPath}/${cfg.config}";
+  
+  # Добавляем gnused для замены путей в конфигурации
+  runtimeDeps = with pkgs; [ gnused kmod ];
     
   firewallScript = pkgs.writeShellScript "zapret-firewall" ''
     set -e
@@ -21,8 +24,14 @@ let
       exit 1
     fi
     
+    # Создаем временную копию конфигурации где ожидает zapret
+    mkdir -p /tmp/zapret-config
+    
+    # Заменяем hardcoded пути /opt/zapret/ на правильные Nix store пути
+    ${pkgs.gnused}/bin/sed 's|/opt/zapret/|${zapretPkg}/opt/zapret/|g' "${configFile}" > /tmp/zapret-config/config
+    
     # Загружаем конфигурацию
-    source "${configFile}"
+    source /tmp/zapret-config/config
     
     # Экспортируем необходимые переменные
     export ZAPRET_BASE
@@ -36,6 +45,9 @@ let
     export DESYNC_MARK
     export DESYNC_MARK_POSTNAT
     export FWTYPE
+    
+    # Создаем симлинк на конфигурацию в нужное место
+    ln -sf /tmp/zapret-config/config ${zapretPkg}/opt/zapret/config
     
     # Создаем и применяем правила фаерволла
     case "$1" in
@@ -66,8 +78,9 @@ in {
     
     configPath = mkOption {
       type = types.path;
-      default = ./../../configs;
-      description = "Path to directory containing zapret configuration files";
+      default = null;
+      description = "Path to directory containing zapret configuration files. Must be set explicitly.";
+      example = "/path/to/your/configs";
     };
     
     firewallType = mkOption {
@@ -96,8 +109,12 @@ in {
     # Проверяем наличие конфигурационного файла
     assertions = [
       {
-        assertion = builtins.pathExists configFile;
-        message = "Zapret configuration file ${cfg.config} not found in ${cfg.configPath}";
+        assertion = cfg.configPath != null;
+        message = "services.zapret-discord-youtube.configPath must be set explicitly. Example: configPath = ./configs;";
+      }
+      {
+        assertion = cfg.configPath != null -> builtins.pathExists configFile;
+        message = "Zapret configuration file ${cfg.config} not found in ${toString cfg.configPath}";
       }
     ];
     
@@ -117,10 +134,10 @@ in {
       
       preStart = ''
         # Проверяем доступность необходимых модулей ядра
-        ${pkgs.kmod}/bin/modprobe xt_NFQUEUE || true
-        ${pkgs.kmod}/bin/modprobe xt_connbytes || true
-        ${pkgs.kmod}/bin/modprobe xt_mark || true
-        ${pkgs.kmod}/bin/modprobe xt_tcpudp || true
+        ${lib.getExe' pkgs.kmod "modprobe"} xt_NFQUEUE || true
+        ${lib.getExe' pkgs.kmod "modprobe"} xt_connbytes || true
+        ${lib.getExe' pkgs.kmod "modprobe"} xt_mark || true
+        ${lib.getExe' pkgs.kmod "modprobe"} xt_tcpudp || true
       '';
     };
     
