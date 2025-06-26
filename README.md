@@ -27,10 +27,10 @@
    bash <(curl -s https://raw.githubusercontent.com/kartavkun/zapret-discord-youtube/main/setup.sh)
    ```
 
-   Если не работает, то запустите другую команду ([Спасибо, RekQu](https://github.com/kartavkun/zapret-discord-youtube/discussions/16#discussioncomment-13573048)):
-    ```bash
-    bash <(curl -s https://raw.githubusercontent.com/kartavkun/zapret-discord-youtube/main/setup.sh | psub)
-    ```
+  Если не работает, то запустите другую команду ([Спасибо, RekQu](https://github.com/kartavkun/zapret-discord-youtube/discussions/16#discussioncomment-13573048)):
+  ```bash
+  bash <(curl -s https://raw.githubusercontent.com/kartavkun/zapret-discord-youtube/main/setup.sh | psub)
+  ```
 
 Этот скрипт:
 
