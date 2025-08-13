@@ -55,33 +55,23 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
 ```nix
 # В вашем flake.nix
 {
+  description = "NixOS configuration with zapret-discord-youtube";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    zapret-discord-youtube.url = "github:kartavkun/zapret-discord-youtube";
+    zapret-discord-youtube.url = "github:kartavkun/zapret-discord-youtube;
   };
 
-  outputs = { self, nixpkgs, zapret-discord-youtube }@inputs: {
+  outputs = { self, nixpkgs, zapret-discord-youtube }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inputs = { inherit nixpkgs zapret-discord-youtube; }; };
       modules = [
         ./configuration.nix
         zapret-discord-youtube.nixosModules.default
-        
-        # Конфигурация zapret прямо здесь
         {
           services.zapret-discord-youtube = {
             enable = true;
-            config = "general";
-            configPath = zapret-discord-youtube + "/configs";
-            firewallType = "iptables";
-            enableIPv6 = false;
-          };
-          
-          # Дополнительные настройки для zapret
-          boot.kernel.sysctl = {
-            "net.ipv4.ip_forward" = 1;
-            "net.ipv6.conf.all.forwarding" = 1;
+            config = "general(МГТС)";  # любой конфиг из configs (general, general(ALT), general(МГТС) и т.д.)
           };
         }
       ];
