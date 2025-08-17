@@ -16,11 +16,11 @@
 stdenv.mkDerivation rec {
   pname = "zapret";
   version = "71.3";
-  hash = "sha256-q3q9JjOFpDQFznW/EghbUrYwlpMW1ZdRV27LreUIH1U=";
+  hash = "sha256-dvyzMkSBq8IEZ5aW/eggr00vr2mh2dtq7JCCvvYXmBU=";
 
   src = fetchurl {
     url = "https://github.com/bol-van/zapret/releases/download/v${version}/zapret-v${version}.tar.gz";
-    hash = "sha256-q3q9JjOFpDQFznW/EghbUrYwlpMW1ZdRV27LreUIH1U=";
+    hash = "sha256-dvyzMkSBq8IEZ5aW/eggr00vr2mh2dtq7JCCvvYXmBU=";
   };
 
   # Загружаем конфигурации заранее
