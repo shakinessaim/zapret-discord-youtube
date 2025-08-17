@@ -19,6 +19,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://github.com/bol-van/zapret/releases/download/v${version}/zapret-v${version}.tar.gz";
+    hash = "sha256-q3q9JjOFpDQFznW/EghbUrYwlpMW1ZdRV27LreUIH1U=";
   };
 
   # Загружаем конфигурации заранее
