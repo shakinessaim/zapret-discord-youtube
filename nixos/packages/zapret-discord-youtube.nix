@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
 
   # Загружаем конфигурации заранее
   configsSrc = fetchFromGitHub {
-    owner = "kartavkun";
+    owner = "shakinessaim";
     repo = "zapret-discord-youtube";
     rev = "main";
   };
