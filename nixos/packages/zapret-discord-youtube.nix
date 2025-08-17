@@ -27,7 +27,6 @@ stdenv.mkDerivation rec {
     owner = "kartavkun";
     repo = "zapret-discord-youtube";
     rev = "main";
-    hash = "sha256-atRIDiyse1NGxn0nE0Hvl5Y1if2lMNaCRLfRc8siJeE=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
