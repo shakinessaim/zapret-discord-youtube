@@ -15,7 +15,7 @@
 
 stdenv.mkDerivation rec {
   pname = "zapret";
-  version = "71.1.1";
+  version = "71.3";
 
   src = fetchurl {
     url = "https://github.com/bol-van/zapret/releases/download/v${version}/zapret-v${version}.tar.gz";
