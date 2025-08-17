@@ -16,11 +16,11 @@
 stdenv.mkDerivation rec {
   pname = "zapret";
   version = "71.3";
-  hash = "sha256-dvyzMkSBq8IEZ5aW/eggr00vr2mh2dtq7JCCvvYXmBU=";
+  hash = "";
 
   src = fetchurl {
     url = "https://github.com/bol-van/zapret/releases/download/v${version}/zapret-v${version}.tar.gz";
-    hash = "sha256-dvyzMkSBq8IEZ5aW/eggr00vr2mh2dtq7JCCvvYXmBU=";
+    hash = "";
   };
 
   # Загружаем конфигурации заранее
@@ -28,7 +28,7 @@ stdenv.mkDerivation rec {
     owner = "shakinessaim";
     repo = "zapret-discord-youtube";
     rev = "main";
-    hash = "sha256-HCDeVf+1oynVyuwdEH/HB+O60X2Ei9ZdxLi6dBo+41g=";
+    hash = "";
   };
 
   nativeBuildInputs = [ makeWrapper ];
